@@ -1,0 +1,111 @@
+@baseUrl = http://localhost:5035/api
+
+### Alle Schüler
+GET {{baseUrl}}/schülerIn
+
+### Schüler mit Ausweisnummer 500001
+GET {{baseUrl}}/schülerIn/323
+
+### Neuen Schüler anlegen (Nummer 0 => generieren)
+POST {{baseUrl}}/schülerIn
+Content-Type: application/json
+
+{
+  "ausweisnummer": 0,
+  "vorname": "Max",
+  "nachname": "Mustermann"
+}
+
+### Schüler aktualisieren
+PUT {{baseUrl}}/schülerIn/500001
+Content-Type: application/json
+
+{
+  "ausweisnummer": 500001,
+  "vorname": "Maximilian",
+  "nachname": "Mustermann"
+}
+
+### Schüler löschen
+DELETE {{baseUrl}}/schülerIn/323
+
+### Alle Bücher
+GET {{baseUrl}}/buch
+
+### Buch mit Nummer 2026-90001
+GET {{baseUrl}}/buch/2026-1321326
+
+### Buch suchen
+GET {{baseUrl}}/buch/suche/asdasd
+
+### Neues Buch anlegen (Nummer 0)
+POST {{baseUrl}}/buch
+Content-Type: application/json
+
+{
+  "buchnummer": "0",
+  "titel": "Der Herr der Ringe",
+  "autorInnen": "J.R.R. Tolkien",
+  "sachgebiet": "Fantasy",
+  "isbn": "978-3-608-90001-5",
+  "verlag": "Klett-Cotta",
+  "verlagsort": "Stuttgart",
+  "erscheinungsdatum": "1954-07-29"
+}
+
+### Buch aktualisieren
+PUT {{baseUrl}}/buch/2026-1321326
+Content-Type: application/json
+
+{
+  "buchnummer": "2026-1321326",
+  "titel": "Der Herr der Ringe (Band 1)",
+  "autorInnen": "J.R.R. Tolkien",
+  "sachgebiet": "Fantasy",
+  "isbn": "978-3-608-90001-5",
+  "verlag": "Klett-Cotta",
+  "verlagsort": "Stuttgart",
+  "erscheinungsdatum": "1954-07-29"
+}
+
+### Buch löschen
+DELETE {{baseUrl}}/buch/2026-1321326
+
+### Alle Ausleihen
+GET {{baseUrl}}/ausleihen
+
+### Ausleihe per Buchnummer
+GET {{baseUrl}}/ausleihen/2026-00443
+
+### Neue Ausleihe anlegen
+POST {{baseUrl}}/ausleihen
+Content-Type: application/json
+
+{
+  "buchnummer": "2026-90001",
+  "ausweisnummer": 500001
+}
+
+### Buch zurückgeben (anonymisieren)
+PUT {{baseUrl}}/ausleihen/2026-00443
+
+### Ausleihe löschen
+DELETE {{baseUrl}}/ausleihen/1
+
+### Statistik: Gesamtanzahl Ausleihen
+GET {{baseUrl}}/statistik/ausleihen/gesamt
+
+### Statistik: Aktive Ausleihen
+GET {{baseUrl}}/statistik/ausleihen/aktiv
+
+### Statistik: Top 10 Bücher
+GET {{baseUrl}}/statistik/top-buecher?take=10
+
+### Bulk-Ausleihe
+POST {{baseUrl}}/ausleihen/bulk
+Content-Type: application/json
+
+{
+  "schülerInAusweisnummer": 500001,
+  "buchNummern": ["2026-90001", "2026-90002"]
+}
