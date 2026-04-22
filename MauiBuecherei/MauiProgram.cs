@@ -1,7 +1,7 @@
-﻿using MauiBuecherei.Services;
-using MauiBuecherei.Views;
-using Microsoft.Extensions.Logging;
-using System.Text.Json.Nodes;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using MauiBuecherei.Services;
+using MauiBuecherei.ViewModels;
 
 namespace MauiBuecherei
 {
@@ -17,20 +17,41 @@ namespace MauiBuecherei
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-            // HttpClient
-            builder.Services.AddSingleton<HttpClient>(sp =>
-            {
-                var client = new HttpClient { BaseAddress = new Uri("http://10.0.2.2:5035") };
-                client.DefaultRequestHeaders.Add("Accept", "Application/JsonArray");
-                return client;
-            });
-
-            builder.Services.AddSingleton<ApiClient>();
-            builder.Services.AddTransient<SchülerInPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+            // Basis-URL je nach Plattform
+            string baseUrl = DeviceInfo.Platform == DevicePlatform.Android
+                ? "http://10.0.2.2:5035/api/"
+                : "http://localhost:5035/api/";
+
+            builder.Services.AddHttpClient<SchülerInApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.Timeout = TimeSpan.FromSeconds(10);
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                // Handler, der HTTP ohne SSL erlaubt und Umleitungen verhindert
+                return new HttpClientHandler
+                {
+                    // Keine automatische Weiterleitung von HTTP auf HTTPS
+                    AllowAutoRedirect = true,
+                    // Akzeptiere alle Zertifikate (nur für Entwicklung)
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
+                    // Verwende keine Standard-Proxy-Einstellungen
+                    UseProxy = false
+                };
+            });
+
+            builder.Services.AddTransient<SchülerInListViewModel>();
+            builder.Services.AddTransient<SchülerInListPage>();
+            builder.Services.AddTransient<SchülerInDetailPage>();
+
+            Routing.RegisterRoute(nameof(SchülerInListPage), typeof(SchülerInListPage));
+            Routing.RegisterRoute(nameof(SchülerInDetailPage), typeof(SchülerInDetailPage));
 
             return builder.Build();
         }

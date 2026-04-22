@@ -1,8 +1,8 @@
 namespace MauiBuecherei
 {
-    public partial class AppShell : Shell
+    public partial class BuchListPage : ContentPage
     {
-        public AppShell()
+        public BuchListPage()
         {
             InitializeComponent();
         }

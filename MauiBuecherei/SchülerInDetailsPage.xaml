@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiBuecherei.SchülerInDetailPage"
+             Title="Schüler bearbeiten">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+        <VerticalStackLayout Spacing="15">
+            <Label Text="Ausweisnummer" FontAttributes="Bold" />
+            <Entry x:Name="EntryAusweisnummer" Placeholder="0 für automatische Vergabe" />
+
+            <Label Text="Vorname" FontAttributes="Bold" />
+            <Entry x:Name="EntryVorname" />
+
+            <Label Text="Nachname" FontAttributes="Bold" />
+            <Entry x:Name="EntryNachname" />
+
+            <Button Text="Speichern" Clicked="OnSaveClicked" HeightRequest="50" />
+            <Button x:Name="DeleteButton" Text="Löschen" Clicked="OnDeleteClicked" BackgroundColor="Red" TextColor="White" HeightRequest="50" />
+            <Button Text="Abbrechen" Clicked="OnCancelClicked" HeightRequest="50" />
+        </VerticalStackLayout>
+
+        <ActivityIndicator Grid.RowSpan="2" IsVisible="False" x:Name="LoadingIndicator" 
+                           HorizontalOptions="Center" VerticalOptions="Center" Scale="1.5" />
+    </Grid>
+</ContentPage>

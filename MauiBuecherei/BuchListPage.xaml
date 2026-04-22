@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiBuecherei.BuchListPage"
+             Title="Bücher">
+    <Grid RowDefinitions="Auto, *" Padding="10">
+
+        <HorizontalStackLayout Grid.Row="0" Spacing="5">
+            <Entry Placeholder="Suche..." HorizontalOptions="Fill" />
+            <Button Text="🔍" WidthRequest="50" />
+        </HorizontalStackLayout>
+
+        <CollectionView Grid.Row="1" Margin="0,10">
+            <CollectionView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Der Prozess (KAF-0001)</x:String>
+                    <x:String>Faust (GOE-0002)</x:String>
+                    <x:String>1984 (ORW-0003)</x:String>
+                </x:Array>
+            </CollectionView.ItemsSource>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding}" VerticalTextAlignment="Center" />
+
+                        <HorizontalStackLayout Grid.Column="1" Spacing="5">
+                            <Button Text="✏️" WidthRequest="40" BackgroundColor="LightBlue" />
+                            <Button Text="🗑️" WidthRequest="40" BackgroundColor="LightCoral" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="1" Text="+ Neues Buch" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,20"/>
+
+    </Grid>
+</ContentPage>

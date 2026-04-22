@@ -1,4 +1,4 @@
-﻿namespace MauiBuecherei.Dtos
+﻿namespace MauiBuecherei.Models
 {
     public class SchülerInDto
     {

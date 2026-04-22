@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MauiBuecherei.ViewModels"
+             xmlns:models="clr-namespace:MauiBuecherei.Models"
+             x:Class="MauiBuecherei.SchülerInListPage"
+             Title="SchülerInnen">
+
+    <Grid RowDefinitions="Auto, Auto, *" Padding="10">
+
+        <Button Grid.Row="0" 
+                Text="+ Neuer Schüler" 
+                Command="{Binding CreateSchülerInCommand}" 
+                HeightRequest="50" 
+                Margin="0,0,0,10"/>
+
+        <HorizontalStackLayout Grid.Row="1" Spacing="5">
+            <Entry Placeholder="Suche..." 
+                   Text="{Binding Suchbegriff}" 
+                   HorizontalOptions="Fill" />
+            <Button Text="🔍" Command="{Binding SearchCommand}" WidthRequest="50" />
+        </HorizontalStackLayout>
+
+        <RefreshView Grid.Row="2" Command="{Binding LoadSchülerInCommand}" IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding SchülerIn}" Margin="0,10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:SchülerInDto">
+                        <Grid Padding="5" ColumnDefinitions="*, Auto, Auto">
+                            <HorizontalStackLayout Grid.Column="0" Spacing="10">
+                                <Label Text="{Binding Ausweisnummer}" WidthRequest="60" VerticalTextAlignment="Center" />
+                                <Label Text="{Binding Vorname}" WidthRequest="100" VerticalTextAlignment="Center" />
+                                <Label Text="{Binding Nachname}" WidthRequest="100" VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                            <Button Grid.Column="1" Text="✏️" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SchülerInListViewModel}}, Path=EditSchülerInCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="LightBlue" WidthRequest="40" Margin="2" />
+                            <Button Grid.Column="2" Text="🗑️" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SchülerInListViewModel}}, Path=DeleteSchülerInCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="LightCoral" WidthRequest="40" Margin="2" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <ActivityIndicator Grid.RowSpan="3" IsRunning="{Binding IsBusy}" 
+                           HorizontalOptions="Center" VerticalOptions="Center"
+                           Scale="1.5" />
+    </Grid>
+</ContentPage>
