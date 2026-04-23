@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="../blockwoche.3.mvcbuecherei/LibraryApi/LibraryApi.csproj" />
-  <Project Path="MauiBuecherei/MauiBuecherei.csproj" Id="0edff4f2-e3db-4d4c-8ad1-ebff4110bde5" />
+  <Project Path="MauiBuecherei/MauiBuecherei.csproj" Id="0edff4f2-e3db-4d4c-8ad1-ebff4110bde5">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>
