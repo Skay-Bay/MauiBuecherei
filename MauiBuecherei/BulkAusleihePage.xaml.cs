@@ -3,11 +3,11 @@ using MauiBuecherei.Services;
 
 namespace MauiBuecherei
 {
-    public partial class BulkAusleihePage : ContentPage
+    public partial class BulkAusleiheErstellenPage : ContentPage
     {
         private readonly AusleiheApiService _ausleiheService;
 
-        public BulkAusleihePage(AusleiheApiService ausleiheService)
+        public BulkAusleiheErstellenPage(AusleiheApiService ausleiheService)
         {
             InitializeComponent();
             _ausleiheService = ausleiheService;

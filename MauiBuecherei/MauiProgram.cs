@@ -34,11 +34,15 @@ namespace MauiBuecherei
             builder.Services.AddSingleton<SchülerInApiService>();
             builder.Services.AddSingleton<BuchApiService>();
             builder.Services.AddSingleton<AusleiheApiService>();
+            builder.Services.AddSingleton<StatistikApiService>();
 
             // ViewModels
             builder.Services.AddTransient<SchülerInListViewModel>();
             builder.Services.AddTransient<BuchListViewModel>();
+            builder.Services.AddTransient<AusleiheErstellenViewModel>();
             builder.Services.AddTransient<AusleiheListViewModel>();
+            builder.Services.AddTransient<StatistikViewModel>();
+            builder.Services.AddTransient<SearchViewModel>();
 
             // Pages
             builder.Services.AddTransient<SchülerInListPage>();
@@ -46,9 +50,9 @@ namespace MauiBuecherei
             builder.Services.AddTransient<BuchListPage>();
             builder.Services.AddTransient<BuchDetailPage>();
             builder.Services.AddTransient<AusleiheListPage>();
-            builder.Services.AddTransient<AusleiheDetailPage>();
-            builder.Services.AddTransient<BulkAusleihePage>();
-
+            builder.Services.AddTransient<AusleiheErstellenPage>();
+            builder.Services.AddTransient<StatistikPage>();
+            builder.Services.AddTransient<SearchPage>();
 
             return builder.Build();
         }

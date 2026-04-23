@@ -49,11 +49,11 @@ namespace MauiBuecherei.ViewModels
         [RelayCommand]
         private async Task CreateAusleihe()
         {
-            await Shell.Current.GoToAsync(nameof(AusleiheDetailPage) + "?mode=new");
+            await Shell.Current.GoToAsync(nameof(AusleiheErstellenPage));
         }
 
         [RelayCommand]
-        private async Task ReturnBook(AusleiheDto ausleihe)
+        private async Task ReturnBook(AusleiheDto? ausleihe)
         {
             if (ausleihe == null || ausleihe.Rueckgabedatum != null) return;
             bool confirm = await Shell.Current.DisplayAlertAsync("Rückgabe", $"Buch {ausleihe.Buchnummer} wirklich zurückgeben?", "Ja", "Nein");
@@ -66,8 +66,7 @@ namespace MauiBuecherei.ViewModels
                 if (success)
                 {
                     ausleihe.Rueckgabedatum = DateTime.Now;
-                    ausleihe.Ausweisnummer = 0; // API anonymisiert, wir setzen opt. 0
-                    // Liste aktualisieren
+                    ausleihe.Ausweisnummer = 0;
                     var index = Ausleihen.IndexOf(ausleihe);
                     if (index >= 0)
                     {
@@ -92,7 +91,7 @@ namespace MauiBuecherei.ViewModels
         }
 
         [RelayCommand]
-        private async Task DeleteAusleihe(AusleiheDto ausleihe)
+        private async Task DeleteAusleihe(AusleiheDto? ausleihe)
         {
             if (ausleihe == null) return;
             bool confirm = await Shell.Current.DisplayAlertAsync("Löschen", $"Ausleihe #{ausleihe.Id} löschen?", "Ja", "Nein");
@@ -120,12 +119,6 @@ namespace MauiBuecherei.ViewModels
             {
                 IsBusy = false;
             }
-        }
-
-        [RelayCommand]
-        private async Task BulkAusleihe()
-        {
-            await Shell.Current.GoToAsync(nameof(BulkAusleihePage));
         }
     }
 }

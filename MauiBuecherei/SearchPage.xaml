@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MauiBuecherei.ViewModels"
+             xmlns:models="clr-namespace:MauiBuecherei.Models"
+             x:Class="MauiBuecherei.SearchPage"
+             Title="Suche">
+
+    <Grid RowDefinitions="Auto,*" Padding="15">
+        <Entry Placeholder="Buchtitel, Autor, Sachgebiet, Schülername…"
+               Text="{Binding Suchbegriff}" Margin="0,10"/>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="15">
+                <!-- Gefundene Bücher -->
+                <Label Text="Bücher" FontAttributes="Bold" />
+                <CollectionView ItemsSource="{Binding GefundeneBücher}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:BuchDto">
+                            <Grid Padding="5" ColumnDefinitions="*, Auto">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Titel}" FontSize="16"/>
+                                    <Label Text="{Binding AutorInnen}" FontSize="14"/>
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1" Text="{Binding Buchnummer}" VerticalOptions="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Gefundene SchülerInnen -->
+                <Label Text="SchülerInnen" FontAttributes="Bold" />
+                <CollectionView ItemsSource="{Binding GefundeneSchüler}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:SchülerInDto">
+                            <Grid Padding="5">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="{Binding Ausweisnummer}" />
+                                    <Label Text="{Binding Vorname}" />
+                                    <Label Text="{Binding Nachname}" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Aktive Ausleihen -->
+                <Label Text="Aktive Ausleihen" FontAttributes="Bold" />
+                <CollectionView ItemsSource="{Binding AktiveAusleihen}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:AusleiheDto">
+                            <Label Padding="5">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Buch: " />
+                                        <Span Text="{Binding Buchnummer}" FontAttributes="Bold"/>
+                                        <Span Text=" | Schüler: " />
+                                        <Span Text="{Binding Ausweisnummer}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Überfällige Ausleihen -->
+                <Label Text="Überfällige Ausleihen" TextColor="Red" FontAttributes="Bold" />
+                <CollectionView ItemsSource="{Binding ÜberfälligeAusleihen}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:AusleiheDto">
+                            <Label Padding="5" TextColor="Red">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Buch: " />
+                                        <Span Text="{Binding Buchnummer}" FontAttributes="Bold"/>
+                                        <Span Text=" | seit " />
+                                        <Span Text="{Binding Ausleihdatum, StringFormat='{0:dd.MM.yyyy}'}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator Grid.RowSpan="2" IsVisible="{Binding IsBusy}" 
+                           HorizontalOptions="Center" VerticalOptions="Center" Scale="1.5" />
+    </Grid>
+</ContentPage>

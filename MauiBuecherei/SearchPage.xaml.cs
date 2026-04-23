@@ -2,11 +2,11 @@ using MauiBuecherei.ViewModels;
 
 namespace MauiBuecherei
 {
-    public partial class AusleiheListPage : ContentPage
+    public partial class SearchPage : ContentPage
     {
-        private readonly AusleiheListViewModel _viewModel;
+        private readonly SearchViewModel _viewModel;
 
-        public AusleiheListPage(AusleiheListViewModel viewModel)
+        public SearchPage(SearchViewModel viewModel)
         {
             InitializeComponent();
             BindingContext = _viewModel = viewModel;
@@ -15,7 +15,7 @@ namespace MauiBuecherei
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            _viewModel.LoadAusleihenCommand.Execute(null);
+            _viewModel.LoadDataCommand.Execute(null);
         }
     }
 }

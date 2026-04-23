@@ -21,31 +21,24 @@ namespace MauiBuecherei
 
         protected override async void OnAppearing()
         {
-            try
+            base.OnAppearing();
+            if (Mode == "new")
             {
-                base.OnAppearing();
-
-                if (Mode == "new")
-                {
-                    Title = "Neues Buch";
+                Title = "Neues Buch";
+                if (!string.IsNullOrEmpty(Buchnummer) && Buchnummer != "0")
+                    EntryBuchnummer.Text = Buchnummer;
+                else
                     EntryBuchnummer.Text = "0";
-                    EntryBuchnummer.IsEnabled = true;
-                    DeleteButton.IsVisible = false;
-                    DatePickerErscheinungsdatum.Date = DateTime.Today;   // Standardwert heute
-                }
-                else if (!string.IsNullOrEmpty(Buchnummer))
-                {
-                    Title = "Buch bearbeiten";
-                    await LoadBuchAsync(Buchnummer);
-                    EntryBuchnummer.IsEnabled = false; // Nummer nicht änderbar
-                    DeleteButton.IsVisible = true;
-                }
+                EntryBuchnummer.IsEnabled = true;
+                DeleteButton.IsVisible = false;
+                DatePickerErscheinungsdatum.Date = DateTime.Today;
             }
-            catch (Exception ex)
+            else if (!string.IsNullOrEmpty(Buchnummer))
             {
-                System.Diagnostics.Debug.WriteLine($"OnAppearing-Fehler: {ex}");
-                await DisplayAlertAsync("Fehler", $"Seitenfehler: {ex.Message}", "OK");
-                await Shell.Current.GoToAsync("..");
+                Title = "Buch bearbeiten";
+                await LoadBuchAsync(Buchnummer);
+                EntryBuchnummer.IsEnabled = false;
+                DeleteButton.IsVisible = true;
             }
         }
 
@@ -107,7 +100,6 @@ namespace MauiBuecherei
 
                 if (Mode == "new" || _currentBuch == null)
                 {
-                    // POST – neues Buch anlegen
                     var created = await _buchService.CreateBuchAsync(dto);
                     if (created != null)
                     {
@@ -121,7 +113,6 @@ namespace MauiBuecherei
                 }
                 else
                 {
-                    // PUT – Buch aktualisieren
                     bool success = await _buchService.UpdateBuchAsync(_currentBuch.Buchnummer, dto);
                     if (success)
                     {

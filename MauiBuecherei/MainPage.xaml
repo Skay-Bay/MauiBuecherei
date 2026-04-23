@@ -5,27 +5,27 @@
              Title="Bibliothek">
     <VerticalStackLayout Padding="30" Spacing="15" VerticalOptions="Center">
 
-        <Label Text="📚 Bibliotheksverwaltung" FontSize="28" HorizontalOptions="Center" Margin="0,0,0,30"/>
+        <Label Text="Bibliotheksverwaltung" FontSize="28" HorizontalOptions="Center" Margin="0,0,0,30"/>
 
-        <Button Text="👩‍🎓 SchülerInnen" 
+        <Button Text="SchülerInnen" 
                 Clicked="OnSchülerInClicked" 
                 HeightRequest="60" FontSize="18"/>
 
-        <Button Text="📖 Bücher" 
+        <Button Text="Bücher" 
                 Clicked="OnBuchClicked" 
                 HeightRequest="60" FontSize="18"/>
 
-        <Button Text="↪️ Ausleihen" 
+        <Button Text="Ausleihen" 
                 Clicked="OnAusleiheClicked" 
                 HeightRequest="60" FontSize="18"/>
 
-        <Button Text="📊 Statistik" 
+        <Button Text="Statistik" 
                 Clicked="OnStatistikClicked" 
                 HeightRequest="60" FontSize="18"/>
 
-        <Button Text="💾 Datenbank exportieren/importieren" 
-                Clicked="OnDatabaseClicked" 
-                HeightRequest="60" FontSize="18"/>
+        <Button Text="Suche" 
+        Clicked="OnSearchClicked" 
+        HeightRequest="60" FontSize="18"/>
 
     </VerticalStackLayout>
 </ContentPage>

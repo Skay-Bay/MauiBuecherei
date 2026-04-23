@@ -2,43 +2,51 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:MauiBuecherei.ViewModels"
+             xmlns:converters="clr-namespace:MauiBuecherei.Converters"
              x:Class="MauiBuecherei.AusleiheListPage"
              Title="Ausleihen">
+
+    <ContentPage.Resources>
+        <converters:IsNullConverter x:Key="IsNullConverter" />
+    </ContentPage.Resources>
+
     <Grid RowDefinitions="Auto,Auto,*" Padding="15">
-        <Button Text="Neue Ausleihe" Command="{Binding CreateAusleiheCommand}" Margin="0,5" />
-        <Button Grid.Row="1" Text="Bulk-Ausleihe" Command="{Binding BulkAusleiheCommand}" Margin="0,5" />
+        <Button Text="Neue Ausleihe"
+                Command="{Binding CreateAusleiheCommand}"
+                Margin="0,5" />
+
+        <!-- Live-Suche -->
+        <Entry Grid.Row="1" Placeholder="Suchen..." Text="{Binding Suchbegriff}" Margin="0,5" />
 
         <CollectionView Grid.Row="2" ItemsSource="{Binding Ausleihen}" SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="Rückgabe" BackgroundColor="Green"
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AusleiheListViewModel}}, Path=ReturnBookCommand}"
-                                           CommandParameter="{Binding .}" />
-                                <SwipeItem Text="Löschen" BackgroundColor="Red"
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AusleiheListViewModel}}, Path=DeleteAusleiheCommand}"
-                                           CommandParameter="{Binding .}" />
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <Grid Padding="10">
-                            <VerticalStackLayout>
-                                <Label FontAttributes="Bold">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="Buch: " />
-                                            <Span Text="{Binding Buchnummer}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Label Text="{Binding Ausweisnummer, StringFormat='Schüler: {0}'}" />
-                                <Label Text="{Binding Ausleihdatum, StringFormat='Ausgeliehen: {0:dd.MM.yyyy HH:mm}'}" />
-                                <Label Text="{Binding Rueckgabedatum, StringFormat='Zurück am: {0:dd.MM.yyyy HH:mm}'}" 
-                                       TextColor="Gray" />
-                            </VerticalStackLayout>
-                        </Grid>
-                    </SwipeView>
+                    <Grid Padding="5" ColumnDefinitions="*, Auto, Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label FontAttributes="Bold">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Buch: " />
+                                        <Span Text="{Binding Buchnummer}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Text="{Binding Ausweisnummer, StringFormat='Schüler: {0}'}" />
+                            <Label Text="{Binding Ausleihdatum, StringFormat='Ausgeliehen: {0:dd.MM.yyyy HH:mm}'}" />
+                            <Label Text="{Binding Rueckgabedatum, StringFormat='Zurück am: {0:dd.MM.yyyy HH:mm}'}" />
+                        </VerticalStackLayout>
+                        <HorizontalStackLayout Grid.Column="1" Spacing="3">
+                            <Button Text="↩️"
+                                    HeightRequest="32" WidthRequest="40" Padding="0" FontSize="14"
+                                    IsVisible="{Binding Rueckgabedatum, Converter={StaticResource IsNullConverter}}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AusleiheListViewModel}}, Path=ReturnBookCommand}"
+                                    CommandParameter="{Binding .}" />
+                            <Button Text="🗑️"
+                                    HeightRequest="32" WidthRequest="40" Padding="0" FontSize="14"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AusleiheListViewModel}}, Path=DeleteAusleiheCommand}"
+                                    CommandParameter="{Binding .}" />
+                        </HorizontalStackLayout>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

@@ -2,46 +2,48 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:MauiBuecherei.ViewModels"
+             xmlns:models="clr-namespace:MauiBuecherei.Models"
              x:Class="MauiBuecherei.BuchListPage"
              Title="Bücher">
-    <Grid RowDefinitions="Auto,Auto,*" Padding="15">
-        <!-- Suchleiste -->
-        <SearchBar Placeholder="Titel, Autor, ISBN..." 
-                   Text="{Binding Suchbegriff}" 
-                   SearchCommand="{Binding SearchCommand}" />
 
-        <!-- Neues Buch Button -->
-        <Button Grid.Row="1" Text="Neues Buch" Command="{Binding CreateBuchCommand}" Margin="0,5" />
+    <Grid RowDefinitions="Auto,*" Padding="15">
+        <Button Text="+ Neues Buch"
+                Command="{Binding CreateBuchCommand}"
+                Margin="0,5" />
 
-        <!-- Liste der Bücher -->
-        <CollectionView Grid.Row="2" ItemsSource="{Binding Buecher}" SelectionMode="None">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Buecher}" SelectionMode="None">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="Löschen" BackgroundColor="Red" 
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BuchListViewModel}}, Path=DeleteBuchCommand}" 
-                                           CommandParameter="{Binding .}" />
-                                <SwipeItem Text="Bearbeiten" BackgroundColor="Orange" 
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BuchListViewModel}}, Path=EditBuchCommand}" 
-                                           CommandParameter="{Binding .}" />
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <Grid Padding="10">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Titel}" FontSize="Large" FontAttributes="Bold" />
-                                <Label Text="{Binding AutorInnen}" />
-                                <Label Text="{Binding Buchnummer}" FontSize="Small" TextColor="Gray" />
-                                <Label Text="{Binding ISBN}" FontSize="Small" />
-                            </VerticalStackLayout>
-                        </Grid>
-                    </SwipeView>
+                <DataTemplate x:DataType="models:BuchDto">
+                    <Grid Padding="5" ColumnDefinitions="*, Auto, Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label FontAttributes="Bold">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Buchnr.: " />
+                                        <Span Text="{Binding Buchnummer}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Text="{Binding Titel, StringFormat='Titel: {0}'}" />
+                            <Label Text="{Binding AutorInnen, StringFormat='Autor: {0}'}" />
+                            <Label Text="{Binding ISBN, StringFormat='ISBN: {0}'}" FontSize="Small" TextColor="Gray" />
+                        </VerticalStackLayout>
+                        <HorizontalStackLayout Grid.Column="1" Spacing="3">
+                            <Button Text="✏️"
+                                    HeightRequest="32" WidthRequest="40" Padding="0" FontSize="14"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BuchListViewModel}}, Path=EditBuchCommand}"
+                                    CommandParameter="{Binding .}" />
+                            <Button Text="🗑️"
+                                    HeightRequest="32" WidthRequest="40" Padding="0" FontSize="14"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BuchListViewModel}}, Path=DeleteBuchCommand}"
+                                    CommandParameter="{Binding .}" />
+                        </HorizontalStackLayout>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <ActivityIndicator Grid.RowSpan="3" IsVisible="{Binding IsBusy}" 
+        <ActivityIndicator Grid.RowSpan="2" IsVisible="{Binding IsBusy}" 
                            HorizontalOptions="Center" VerticalOptions="Center" Scale="1.5" />
     </Grid>
 </ContentPage>

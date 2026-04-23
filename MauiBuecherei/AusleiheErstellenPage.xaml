@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MauiBuecherei.ViewModels"
+             x:Class="MauiBuecherei.AusleiheErstellenPage"
+             Title="Ausleihe erstellen">
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *" Padding="15" RowSpacing="10">
+        <!-- Schüler-Bereich -->
+        <VerticalStackLayout>
+            <Label Text="Schüler" FontAttributes="Bold" />
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Text="{Binding SuchbegriffSchüler}" Placeholder="Name oder Nummer" />
+                <Button Grid.Column="1" Text="Erstellen"
+                        Command="{Binding SchülerErstellenCommand}" Margin="5,0,0,0" />
+            </Grid>
+            <!-- Schüler-Liste (immer sichtbar, wird live gefiltert) -->
+            <CollectionView ItemsSource="{Binding SchülerListe}" HeightRequest="150">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Vorname}" FontSize="Medium" />
+                                <Label Text="{Binding Nachname}" FontSize="Small" />
+                                <Label Text="{Binding Ausweisnummer, StringFormat='Nr. {0}'}" TextColor="Gray" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Auswählen"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AusleiheErstellenViewModel}}, Path=SchülerAuswählenCommand}"
+                                    CommandParameter="{Binding .}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!-- Ausgewählter Schüler -->
+            <Border IsVisible="{Binding AusgewählterSchüler, Converter={StaticResource IsNotNullConverter}}"
+                    BackgroundColor="LightGreen" Padding="10" StrokeThickness="0">
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Schüler: " />
+                            <Span Text="{Binding AusgewählterSchüler.Vorname}" FontAttributes="Bold" />
+                            <Span Text=" " />
+                            <Span Text="{Binding AusgewählterSchüler.Nachname}" FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Border>
+        </VerticalStackLayout>
+
+        <!-- Buch-Bereich -->
+        <VerticalStackLayout Grid.Row="1">
+            <Label Text="Bücher suchen" FontAttributes="Bold" />
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Text="{Binding SuchbegriffBuch}" Placeholder="Titel, Autor, ISBN" />
+                <Button Grid.Column="1" Text="Erstellen"
+                        Command="{Binding BuchErstellenCommand}" Margin="5,0,0,0" />
+            </Grid>
+            <!-- Buch-Liste (live gefiltert) -->
+            <CollectionView ItemsSource="{Binding BuchListe}" HeightRequest="150">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Titel}" FontSize="Medium" />
+                                <Label Text="{Binding AutorInnen}" FontSize="Small" />
+                                <Label Text="{Binding Buchnummer}" TextColor="Gray" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Hinzufügen"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AusleiheErstellenViewModel}}, Path=BuchHinzufügenCommand}"
+                                    CommandParameter="{Binding .}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+        <!-- Ausgewählte Bücher -->
+        <VerticalStackLayout Grid.Row="2">
+            <Label Text="Ausgewählte Bücher:" FontAttributes="Bold" />
+            <CollectionView ItemsSource="{Binding AusgewählteBücher}" HeightRequest="200">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*, Auto" Padding="5">
+                            <Label Text="{Binding Titel}" VerticalOptions="Center" />
+                            <Button Grid.Column="1" Text="Entfernen" BackgroundColor="Red"
+                                    TextColor="White"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AusleiheErstellenViewModel}}, Path=BuchEntfernenCommand}"
+                                    CommandParameter="{Binding .}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+        <Button Grid.Row="3" Text="Ausleihe durchführen"
+                Command="{Binding AusleiheDurchführenCommand}"
+                BackgroundColor="Green" TextColor="White" HeightRequest="50"
+                VerticalOptions="End" />
+
+        <ActivityIndicator Grid.RowSpan="4" IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center" VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

@@ -74,6 +74,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="AusleiheErstellenPage.xaml.cs">
+	    <DependentUpon>AusleiheErstellenPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="BuchDetailPage.xaml.cs">
 	    <DependentUpon>BuchDetailPage.xaml</DependentUpon>
 	  </Compile>
@@ -83,7 +86,7 @@
 	  <MauiXaml Update="AppShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="AusleiheDetailPage.xaml">
+	  <MauiXaml Update="AusleiheErstellenPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="AusleiheListPage.xaml">
@@ -95,10 +98,7 @@
 	  <MauiXaml Update="BuchListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="BulkAusleihePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="DatenbankExportImportPage.xaml">
+	  <MauiXaml Update="BulkAusleiheErstellenPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="MainPage.xaml">
@@ -108,6 +108,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SchülerInListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="SearchPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="StatistikPage.xaml">

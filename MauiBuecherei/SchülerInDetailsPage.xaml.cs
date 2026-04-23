@@ -25,7 +25,10 @@ namespace MauiBuecherei
             if (Mode == "new")
             {
                 Title = "Neuer Schüler";
-                EntryAusweisnummer.Text = "0";
+                if (!string.IsNullOrEmpty(Ausweisnummer) && int.TryParse(Ausweisnummer, out int vorlage) && vorlage != 0)
+                    EntryAusweisnummer.Text = vorlage.ToString();
+                else
+                    EntryAusweisnummer.Text = "0";
                 EntryAusweisnummer.IsEnabled = true;
                 DeleteButton.IsVisible = false;
             }
@@ -33,7 +36,7 @@ namespace MauiBuecherei
             {
                 Title = "Schüler bearbeiten";
                 await LoadSchülerInAsync(id);
-                EntryAusweisnummer.IsEnabled = false; // Nummer nicht änderbar
+                EntryAusweisnummer.IsEnabled = false;
                 DeleteButton.IsVisible = true;
             }
         }
@@ -93,7 +96,6 @@ namespace MauiBuecherei
 
                 if (Mode == "new" || _currentSchülerIn == null)
                 {
-                    // Neuanlage – POST mit Nummer (0 generiert automatisch)
                     var created = await _schuelerService.CreateSchülerInAsync(dto);
                     if (created != null)
                     {
@@ -107,7 +109,6 @@ namespace MauiBuecherei
                 }
                 else
                 {
-                    // Bearbeitung – PUT
                     bool success = await _schuelerService.UpdateSchülerInAsync(_currentSchülerIn.Ausweisnummer, dto);
                     if (success)
                     {
