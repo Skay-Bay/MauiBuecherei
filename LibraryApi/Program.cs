@@ -45,8 +45,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
 // CORS muss vor Authorization und MapControllers stehen
 app.UseCors("AllowMvcApp");
 
