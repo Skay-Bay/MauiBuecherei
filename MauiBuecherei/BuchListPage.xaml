@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MauiBuecherei.ViewModels"
              x:Class="MauiBuecherei.BuchListPage"
              Title="Bücher">
-    <Grid RowDefinitions="Auto, *" Padding="10">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="15">
+        <!-- Suchleiste -->
+        <SearchBar Placeholder="Titel, Autor, ISBN..." 
+                   Text="{Binding Suchbegriff}" 
+                   SearchCommand="{Binding SearchCommand}" />
 
-        <HorizontalStackLayout Grid.Row="0" Spacing="5">
-            <Entry Placeholder="Suche..." HorizontalOptions="Fill" />
-            <Button Text="🔍" WidthRequest="50" />
-        </HorizontalStackLayout>
+        <!-- Neues Buch Button -->
+        <Button Grid.Row="1" Text="Neues Buch" Command="{Binding CreateBuchCommand}" Margin="0,5" />
 
-        <CollectionView Grid.Row="1" Margin="0,10">
-            <CollectionView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Der Prozess (KAF-0001)</x:String>
-                    <x:String>Faust (GOE-0002)</x:String>
-                    <x:String>1984 (ORW-0003)</x:String>
-                </x:Array>
-            </CollectionView.ItemsSource>
-
+        <!-- Liste der Bücher -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Buecher}" SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <Label Text="{Binding}" VerticalTextAlignment="Center" />
-
-                        <HorizontalStackLayout Grid.Column="1" Spacing="5">
-                            <Button Text="✏️" WidthRequest="40" BackgroundColor="LightBlue" />
-                            <Button Text="🗑️" WidthRequest="40" BackgroundColor="LightCoral" />
-                        </HorizontalStackLayout>
-                    </Grid>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Löschen" BackgroundColor="Red" 
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BuchListViewModel}}, Path=DeleteBuchCommand}" 
+                                           CommandParameter="{Binding .}" />
+                                <SwipeItem Text="Bearbeiten" BackgroundColor="Orange" 
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BuchListViewModel}}, Path=EditBuchCommand}" 
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="10">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Titel}" FontSize="Large" FontAttributes="Bold" />
+                                <Label Text="{Binding AutorInnen}" />
+                                <Label Text="{Binding Buchnummer}" FontSize="Small" TextColor="Gray" />
+                                <Label Text="{Binding ISBN}" FontSize="Small" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Grid.Row="1" Text="+ Neues Buch" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,20"/>
-
+        <ActivityIndicator Grid.RowSpan="3" IsVisible="{Binding IsBusy}" 
+                           HorizontalOptions="Center" VerticalOptions="Center" Scale="1.5" />
     </Grid>
 </ContentPage>

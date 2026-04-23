@@ -9,13 +9,26 @@ namespace MauiBuecherei
 
         private async void OnSchülerInClicked(object sender, EventArgs e)
         {
-            var page = App.Current.Handler.MauiContext.Services.GetService<SchülerInListPage>();
-            await Shell.Current.Navigation.PushAsync(page);
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(SchülerInListPage));
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Fehler", $"Navigation Schüler fehlgeschlagen:\n{ex.Message}", "OK");
+            }
         }
 
         private async void OnBuchClicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync(nameof(BuchListPage));
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(BuchListPage));
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Fehler", $"Navigation Buch fehlgeschlagen:\n{ex.Message}", "OK");
+            }
         }
 
         private async void OnAusleiheClicked(object sender, EventArgs e)

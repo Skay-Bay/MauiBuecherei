@@ -53,13 +53,13 @@ namespace MauiBuecherei
                 }
                 else
                 {
-                    await DisplayAlert("Fehler", "Schüler nicht gefunden.", "OK");
+                    await DisplayAlertAsync("Fehler", "Schüler nicht gefunden.", "OK");
                     await Shell.Current.GoToAsync("..");
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Fehler", ex.Message, "OK");
+                await DisplayAlertAsync("Fehler", ex.Message, "OK");
             }
             finally
             {
@@ -71,13 +71,13 @@ namespace MauiBuecherei
         {
             if (string.IsNullOrWhiteSpace(EntryVorname.Text) || string.IsNullOrWhiteSpace(EntryNachname.Text))
             {
-                await DisplayAlert("Fehler", "Vor- und Nachname dürfen nicht leer sein.", "OK");
+                await DisplayAlertAsync("Fehler", "Vor- und Nachname dürfen nicht leer sein.", "OK");
                 return;
             }
 
             if (!int.TryParse(EntryAusweisnummer.Text, out int ausweisnummer))
             {
-                await DisplayAlert("Fehler", "Ungültige Ausweisnummer.", "OK");
+                await DisplayAlertAsync("Fehler", "Ungültige Ausweisnummer.", "OK");
                 return;
             }
 
@@ -97,12 +97,12 @@ namespace MauiBuecherei
                     var created = await _schuelerService.CreateSchülerInAsync(dto);
                     if (created != null)
                     {
-                        await DisplayAlert("Erfolg", $"Schüler mit Nummer {created.Ausweisnummer} angelegt.", "OK");
+                        await DisplayAlertAsync("Erfolg", $"Schüler mit Nummer {created.Ausweisnummer} angelegt.", "OK");
                         await Shell.Current.GoToAsync("..");
                     }
                     else
                     {
-                        await DisplayAlert("Fehler", "Anlegen fehlgeschlagen.", "OK");
+                        await DisplayAlertAsync("Fehler", "Anlegen fehlgeschlagen.", "OK");
                     }
                 }
                 else
@@ -111,18 +111,18 @@ namespace MauiBuecherei
                     bool success = await _schuelerService.UpdateSchülerInAsync(_currentSchülerIn.Ausweisnummer, dto);
                     if (success)
                     {
-                        await DisplayAlert("Erfolg", "Schüler aktualisiert.", "OK");
+                        await DisplayAlertAsync("Erfolg", "Schüler aktualisiert.", "OK");
                         await Shell.Current.GoToAsync("..");
                     }
                     else
                     {
-                        await DisplayAlert("Fehler", "Aktualisierung fehlgeschlagen.", "OK");
+                        await DisplayAlertAsync("Fehler", "Aktualisierung fehlgeschlagen.", "OK");
                     }
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Fehler", ex.Message, "OK");
+                await DisplayAlertAsync("Fehler", ex.Message, "OK");
             }
             finally
             {
@@ -133,7 +133,7 @@ namespace MauiBuecherei
         private async void OnDeleteClicked(object sender, EventArgs e)
         {
             if (_currentSchülerIn == null) return;
-            bool confirm = await DisplayAlert("Löschen", $"{_currentSchülerIn.Vorname} {_currentSchülerIn.Nachname} löschen?", "Ja", "Nein");
+            bool confirm = await DisplayAlertAsync("Löschen", $"{_currentSchülerIn.Vorname} {_currentSchülerIn.Nachname} löschen?", "Ja", "Nein");
             if (!confirm) return;
 
             LoadingIndicator.IsVisible = true;
@@ -142,17 +142,17 @@ namespace MauiBuecherei
                 bool success = await _schuelerService.DeleteSchülerInAsync(_currentSchülerIn.Ausweisnummer);
                 if (success)
                 {
-                    await DisplayAlert("Erfolg", "Schüler gelöscht.", "OK");
+                    await DisplayAlertAsync("Erfolg", "Schüler gelöscht.", "OK");
                     await Shell.Current.GoToAsync("..");
                 }
                 else
                 {
-                    await DisplayAlert("Fehler", "Löschen fehlgeschlagen.", "OK");
+                    await DisplayAlertAsync("Fehler", "Löschen fehlgeschlagen.", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Fehler", ex.Message, "OK");
+                await DisplayAlertAsync("Fehler", ex.Message, "OK");
             }
             finally
             {

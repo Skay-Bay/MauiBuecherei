@@ -7,6 +7,7 @@ namespace MauiBuecherei
 {
     public static class MauiProgram
     {
+        // MauiProgram.cs
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -18,40 +19,36 @@ namespace MauiBuecherei
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-            builder.Logging.AddDebug();
-#endif
-
-            // Basis-URL je nach Plattform
-            string baseUrl = DeviceInfo.Platform == DevicePlatform.Android
-                ? "http://10.0.2.2:5035/api/"
-                : "http://localhost:5035/api/";
-
-            builder.Services.AddHttpClient<SchülerInApiService>(client =>
+            // HttpClient für API
+            builder.Services.AddSingleton<HttpClient>(sp =>
             {
-                client.BaseAddress = new Uri(baseUrl);
-                client.Timeout = TimeSpan.FromSeconds(10);
-            })
-            .ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                // Handler, der HTTP ohne SSL erlaubt und Umleitungen verhindert
-                return new HttpClientHandler
+                var client = new HttpClient
                 {
-                    // Keine automatische Weiterleitung von HTTP auf HTTPS
-                    AllowAutoRedirect = true,
-                    // Akzeptiere alle Zertifikate (nur für Entwicklung)
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
-                    // Verwende keine Standard-Proxy-Einstellungen
-                    UseProxy = false
+                    BaseAddress = new Uri("http://10.0.2.2:5035/api/"),
+                    Timeout = TimeSpan.FromSeconds(10)
                 };
+                return client;
             });
 
+            // Services
+            builder.Services.AddSingleton<SchülerInApiService>();
+            builder.Services.AddSingleton<BuchApiService>();
+            builder.Services.AddSingleton<AusleiheApiService>();
+
+            // ViewModels
             builder.Services.AddTransient<SchülerInListViewModel>();
+            builder.Services.AddTransient<BuchListViewModel>();
+            builder.Services.AddTransient<AusleiheListViewModel>();
+
+            // Pages
             builder.Services.AddTransient<SchülerInListPage>();
             builder.Services.AddTransient<SchülerInDetailPage>();
+            builder.Services.AddTransient<BuchListPage>();
+            builder.Services.AddTransient<BuchDetailPage>();
+            builder.Services.AddTransient<AusleiheListPage>();
+            builder.Services.AddTransient<AusleiheDetailPage>();
+            builder.Services.AddTransient<BulkAusleihePage>();
 
-            Routing.RegisterRoute(nameof(SchülerInListPage), typeof(SchülerInListPage));
-            Routing.RegisterRoute(nameof(SchülerInDetailPage), typeof(SchülerInDetailPage));
 
             return builder.Build();
         }

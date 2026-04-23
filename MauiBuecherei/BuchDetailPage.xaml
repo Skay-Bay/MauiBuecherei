@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiBuecherei.BuchDetailPage"
+             Title="Buch bearbeiten">
+    <Grid RowDefinitions="Auto,*" Padding="20">
+        <ScrollView>
+            <VerticalStackLayout Spacing="12">
+                <!-- Buchnummer -->
+                <Label Text="Buchnummer" FontAttributes="Bold" />
+                <Entry x:Name="EntryBuchnummer" 
+                       Placeholder="0 für automatische Vergabe" />
+
+                <!-- Titel -->
+                <Label Text="Titel" FontAttributes="Bold" />
+                <Entry x:Name="EntryTitel" />
+
+                <!-- Autor(en) -->
+                <Label Text="Autor(en)" FontAttributes="Bold" />
+                <Entry x:Name="EntryAutorInnen" />
+
+                <!-- Sachgebiet -->
+                <Label Text="Sachgebiet" FontAttributes="Bold" />
+                <Entry x:Name="EntrySachgebiet" />
+
+                <!-- ISBN -->
+                <Label Text="ISBN" FontAttributes="Bold" />
+                <Entry x:Name="EntryISBN" />
+
+                <!-- Verlag -->
+                <Label Text="Verlag" FontAttributes="Bold" />
+                <Entry x:Name="EntryVerlag" />
+
+                <!-- Verlagsort -->
+                <Label Text="Verlagsort" FontAttributes="Bold" />
+                <Entry x:Name="EntryVerlagsort" />
+
+                <!-- Erscheinungsdatum -->
+                <Label Text="Erscheinungsdatum" FontAttributes="Bold" />
+                <DatePicker x:Name="DatePickerErscheinungsdatum" Format="yyyy-MM-dd"/>
+
+                <!-- Buttons -->
+                <Button Text="Speichern" 
+                        Clicked="OnSaveClicked" 
+                        HeightRequest="50" 
+                        Margin="0,10,0,0"/>
+
+                <Button x:Name="DeleteButton" 
+                        Text="Löschen" 
+                        Clicked="OnDeleteClicked" 
+                        BackgroundColor="Red" 
+                        TextColor="White" 
+                        HeightRequest="50" />
+
+                <Button Text="Abbrechen" 
+                        Clicked="OnCancelClicked" 
+                        HeightRequest="50" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Ladeindikator -->
+        <ActivityIndicator Grid.RowSpan="2" 
+                           IsVisible="False" 
+                           x:Name="LoadingIndicator"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           Scale="1.5" />
+    </Grid>
+</ContentPage>

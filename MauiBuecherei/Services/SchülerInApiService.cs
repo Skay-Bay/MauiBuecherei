@@ -10,7 +10,6 @@ namespace MauiBuecherei.Services
         public SchülerInApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
         }
 
         public async Task<List<SchülerInDto>?> GetSchülerInAsync()

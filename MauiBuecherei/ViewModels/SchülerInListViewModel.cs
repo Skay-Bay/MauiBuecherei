@@ -41,7 +41,7 @@ namespace MauiBuecherei.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Fehler", $"Laden fehlgeschlagen: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlertAsync("Fehler", $"Laden fehlgeschlagen: {ex.Message}", "OK");
             }
             finally
             {
@@ -68,7 +68,7 @@ namespace MauiBuecherei.ViewModels
         private async Task DeleteSchülerIn(SchülerInDto schueler)
         {
             if (schueler == null) return;
-            bool confirm = await Shell.Current.DisplayAlert("Löschen", $"{schueler.Vorname} {schueler.Nachname} löschen?", "Ja", "Nein");
+            bool confirm = await Shell.Current.DisplayAlertAsync("Löschen", $"{schueler.Vorname} {schueler.Nachname} löschen?", "Ja", "Nein");
             if (!confirm) return;
 
             IsBusy = true;
@@ -78,16 +78,16 @@ namespace MauiBuecherei.ViewModels
                 if (success)
                 {
                     SchülerIn.Remove(schueler);
-                    await Shell.Current.DisplayAlert("Erfolg", "Schüler gelöscht.", "OK");
+                    await Shell.Current.DisplayAlertAsync("Erfolg", "Schüler gelöscht.", "OK");
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("Fehler", "Löschen fehlgeschlagen.", "OK");
+                    await Shell.Current.DisplayAlertAsync("Fehler", "Löschen fehlgeschlagen.", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Fehler", ex.Message, "OK");
+                await Shell.Current.DisplayAlertAsync("Fehler", ex.Message, "OK");
             }
             finally
             {
